@@ -40,7 +40,7 @@ export class AuthService {
         { ...payload, isRefreshToken: true },
         { expiresIn: '24h' },
       ),
-      user: { id: user.id, email: user.email },
+      user: { id: user.id, email: user.email, role: user.role },
     };
   }
 

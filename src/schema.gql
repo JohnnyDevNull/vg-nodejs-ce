@@ -11,6 +11,7 @@ type Customer {
   """Date and time when the object was updated last time."""
   updatedAt: Timestamp!
   email: String!
+  role: Float!
 }
 
 """
@@ -73,7 +74,8 @@ type Mutation {
 
 input UpdateUser {
   id: String!
-  email: String!
+  email: String
+  role: Float
 }
 
 input DeleteUser {
@@ -84,4 +86,5 @@ input DeleteUser {
 input CreateUser {
   email: String!
   password: String!
+  role: Float
 }

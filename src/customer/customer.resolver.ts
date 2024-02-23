@@ -58,11 +58,18 @@ export class CustomerResolver extends BaseResolver {
 
   @Mutation(() => Customer, { nullable: true })
   async updateUser(@Args('data') data: UpdateUser) {
-    const { id, email } = data;
+    const { id, email, role } = data;
     let response: Customer = null;
 
     try {
-      response = await this.customerService.updateUser(id, { email });
+      const user = await this.customerService.findOneById(id);
+      if (user) {
+        const data = {
+          email: email || user.email,
+          role: role ?? user.role,
+        };
+        response = await this.customerService.updateUser(id, data);
+      }
     } catch (error) {
       this.logWarning(error, data);
     }
@@ -94,19 +101,26 @@ export class CustomerResolver extends BaseResolver {
   }
 
   @Mutation(() => Customer)
-  async createUser(@Args('data') { email, password }: CreateUser) {
-    const user = await this.customerService.findOneByEmail(email);
-
-    if (user) {
-      throw new BadRequestException();
-    }
-
+  async createUser(@Args('data') data: CreateUser) {
     let response: Customer = null;
 
     try {
-      response = await this.customerService.createUser({ email, password });
+      const { email, password, role } = data;
+
+      const user = await this.customerService.findOneByEmail(email);
+      if (user) {
+        throw new BadRequestException();
+      }
+
+      response = await this.customerService.createUser({
+        email,
+        password,
+        role,
+      });
     } catch (error) {
-      this.logWarning(error);
+      // no sensitive data logging
+      delete data.password;
+      this.logWarning(error, data);
     }
 
     return response;

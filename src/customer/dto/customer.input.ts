@@ -45,8 +45,11 @@ export class UpdateUser {
   @Field(() => String, { nullable: false })
   id: string;
 
-  @Field(() => String, { nullable: false })
-  email: string;
+  @Field(() => String, { nullable: true })
+  email?: string;
+
+  @Field(() => Number, { nullable: true })
+  role?: number;
 }
 
 @InputType()
@@ -65,4 +68,7 @@ export class CreateUser {
 
   @Field(() => String, { nullable: false })
   password: string;
+
+  @Field(() => Number, { nullable: true })
+  role?: number;
 }

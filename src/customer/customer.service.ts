@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { hash } from 'bcryptjs';
 import { PrismaService } from '../prisma.service';
-import { CreateUser, GetCustomerInput } from './dto/customer.input';
+import { CreateUser, GetCustomerInput, UpdateUser } from './dto/customer.input';
 
 @Injectable()
 export class CustomerService {
@@ -26,7 +26,7 @@ export class CustomerService {
     return this.prisma.customer.findFirst({ where: { email } });
   }
 
-  async updateUser(id: string, data: { email: string }) {
+  async updateUser(id: string, data: Omit<Partial<UpdateUser>, 'id'>) {
     return this.prisma.customer.update({ where: { id }, data });
   }
 
