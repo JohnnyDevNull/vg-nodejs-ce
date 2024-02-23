@@ -1,5 +1,6 @@
 import { BadRequestException, Logger } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { BaseResolver } from 'lib/base.resolver';
 import { Customer } from 'lib/entities/customer.entity';
 import { CustomerService } from './customer.service';
 import {
@@ -11,10 +12,12 @@ import {
 } from './dto/customer.input';
 
 @Resolver(() => Customer)
-export class CustomerResolver {
-  private readonly logger = new Logger(CustomerResolver.name);
+export class CustomerResolver extends BaseResolver {
+  protected logger = new Logger(CustomerResolver.name);
 
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(private readonly customerService: CustomerService) {
+    super();
+  }
 
   @Query(() => [Customer])
   async customers(@Args('data') data: GetCustomerInput) {
@@ -107,13 +110,5 @@ export class CustomerResolver {
     }
 
     return response;
-  }
-
-  private logWarning(obj: any, ...params: any[]) {
-    const errorObj = {
-      meta: obj.meta || obj.message || obj,
-      params,
-    };
-    this.logger.warn(errorObj);
   }
 }

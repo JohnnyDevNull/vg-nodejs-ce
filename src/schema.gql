@@ -18,9 +18,32 @@ type Customer {
 """
 scalar Timestamp
 
+type Token {
+  accessToken: String!
+  refreshToken: String!
+  user: Customer!
+}
+
 type Query {
+  signIn(data: SignInInput!): Token
+  signUp(data: SignUpInput!): Token
+  refreshToken(data: RefreshTokenInput!): Token
   customers(data: GetCustomerInput!): [Customer!]!
   customer(data: GetOneCustomerInput!): Customer
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
+  email: String!
+  password: String!
+}
+
+input RefreshTokenInput {
+  token: String!
 }
 
 input GetCustomerInput {

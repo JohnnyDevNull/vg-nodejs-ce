@@ -1,0 +1,49 @@
+#
+# Use this file with the
+# - WebStorm Built in Http Client: https://www.jetbrains.com/help/webstorm/http-client-in-product-code-editor.html#graphql
+# - VsCode https://marketplace.visualstudio.com/items?itemName=humao.rest-client (this would possibly need some modifications below)
+#
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+query SignInQuery {
+  signIn(data: { email: "philipp.john@live.de", password: "123456" }) {
+    accessToken,
+    refreshToken
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+query SignUpQuery {
+    signUp(data: { email: "philipp.john@live.de", password: "123456" }) {
+      accessToken,
+      refreshToken,
+      user {
+        id, email
+      }
+    }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+query RefreshTokenQuery {
+  refreshToken(data: { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiYjJiMDEyNmUtMzA2My00NmU1LTljYTEtMTIxYTIwNzZjOGMzIiwiZW1haWwiOiJwaGlsaXBwLmpvaG5AbGl2ZS5kZSIsImlzUmVmcmVzaFRva2VuIjp0cnVlLCJpYXQiOjE3MDg3Mjc4MjcsImV4cCI6MTcwODgxNDIyN30.1UQjKzCejhE5754usRfcx9553LD8drtEWXOXzKQEsGM" }) {
+    accessToken,
+    refreshToken,
+    user {
+      id, email
+    }
+  }
+}
+
+###
