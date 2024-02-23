@@ -1,0 +1,128 @@
+#
+# Use this file with the
+# - WebStorm Built in Http Client: https://www.jetbrains.com/help/webstorm/http-client-in-product-code-editor.html#graphql
+# - VsCode https://marketplace.visualstudio.com/items?itemName=humao.rest-client (this would possibly need some modifications below)
+#
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+{
+  customers(data: {}) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+{
+  customer(data: { id: "9e391faf-64b2-4d4c-b879-463532920fd3" }) {
+    id, email
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+{
+  customer(data: { email: "test@gmail.com" }) {
+    id, email
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+query CustomerByEmailQuery {
+  customer(data: { email: "user@gmail.com" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+query CustomerByIdQuery {
+  customer(data: { id: "9e391faf-64b2-4d4c-b879-463532920fd3" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+query CustomersQuery {
+  customers(data: { skip: 0, take: 100 }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+mutation UpdateEmailByUserIdMutation {
+    updateUser(data: { id:"9e391faf-64b2-4d4c-b879-463532920fd3", email: "test@gmail.com" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+mutation UpdateEmailByUserId {
+    updateUser(data: { id:"9e391faf-64b2-4d4c-b879-463532920fd3", email: "user@gmail.com" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+mutation CreateUserMutation {
+  createUser(data: { email: "test@test.com", password: "12345" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+mutation DeleteUserMutation {
+  deleteUser(data: { email: "test@test.com" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+
+mutation DeleteUserMutation {
+  deleteUser(data: { id: "d1ff2003-1904-4cb3-9ad3-0eaf51172c77" }) {
+    id, email, createdAt, updatedAt
+  }
+}
+
+###
