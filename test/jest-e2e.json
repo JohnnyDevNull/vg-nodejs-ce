@@ -2,6 +2,9 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "setupFiles": ["<rootDir>/test/jest-setup.ts"],
   "modulePaths": ["<rootDir>"],
+  "moduleNameMapper": {
+    "^lib/(.*)$": "<rootDir>/src/lib/$1"
+  },
   "rootDir": "../.",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
