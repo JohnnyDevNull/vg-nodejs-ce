@@ -1,13 +1,15 @@
 import { BadRequestException, Logger, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BaseResolver } from 'lib/base.resolver';
 import { Customer } from 'lib/entities/customer.entity';
+import { getActivationCode } from 'lib/functions/activation-code.function';
 import { Roles } from 'lib/roles/roles.decorator';
 import { Role } from 'lib/roles/roles.enum';
 import { RolesGuard } from 'lib/roles/roles.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CustomerService } from './customer.service';
 import {
+  ActivateUser,
   CreateUser,
   DeleteUser,
   GetCustomerInput,
@@ -120,6 +122,7 @@ export class CustomerResolver extends BaseResolver {
 
     try {
       const { email, password, role } = data;
+      const activationCode = getActivationCode();
 
       const user = await this.customerService.findOneByEmail(email);
       if (user) {
@@ -130,10 +133,45 @@ export class CustomerResolver extends BaseResolver {
         email,
         password,
         role,
+        activationCode,
       });
     } catch (error) {
       // no sensitive data logging
       delete data.password;
+      this.logWarning(error, data);
+    }
+
+    return response;
+  }
+
+  @Mutation(() => Customer, { nullable: true })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.PUBLIC)
+  async activateUser(
+    @Args('data') data: ActivateUser,
+    @Context('req') req: any,
+  ) {
+    let response: Customer = null;
+
+    try {
+      const { user: requestUser } = req;
+      const { email, activationCode } = data;
+
+      if (requestUser.email !== email) {
+        throw new BadRequestException('Cannot activate other user');
+      }
+
+      const user = await this.customerService.findOneByEmail(email);
+      if (!user || user.activationCode !== activationCode || user.activated) {
+        throw new BadRequestException(
+          'Activation codes does not match or already activated',
+        );
+      }
+
+      response = await this.customerService.updateUser(user.id, {
+        activated: true,
+      });
+    } catch (error) {
       this.logWarning(error, data);
     }
 

@@ -26,7 +26,10 @@ export class CustomerService {
     return this.prisma.customer.findFirst({ where: { email } });
   }
 
-  async updateUser(id: string, data: Omit<Partial<UpdateUser>, 'id'>) {
+  async updateUser(
+    id: string,
+    data: Omit<Partial<UpdateUser>, 'id'> & { activated?: boolean },
+  ) {
     return this.prisma.customer.update({ where: { id }, data });
   }
 
@@ -38,7 +41,7 @@ export class CustomerService {
     return this.prisma.customer.delete({ where: { email } });
   }
 
-  async createUser(data: CreateUser) {
+  async createUser(data: CreateUser & { activationCode: string }) {
     const password = await hash(data.password, 10);
     return this.prisma.customer.create({ data: { ...data, password } });
   }

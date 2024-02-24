@@ -12,6 +12,8 @@ type Customer {
   updatedAt: Timestamp!
   email: String!
   role: Float!
+  activated: Boolean!
+  activationCode: String!
 }
 
 """
@@ -70,6 +72,7 @@ type Mutation {
   updateUser(data: UpdateUser!): Customer
   deleteUser(data: DeleteUser!): Customer
   createUser(data: CreateUser!): Customer!
+  activateUser(data: ActivateUser!): Customer
 }
 
 input UpdateUser {
@@ -87,4 +90,9 @@ input CreateUser {
   email: String!
   password: String!
   role: Float
+}
+
+input ActivateUser {
+  email: String!
+  activationCode: String!
 }

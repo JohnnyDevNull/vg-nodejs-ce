@@ -72,3 +72,12 @@ export class CreateUser {
   @Field(() => Number, { nullable: true })
   role?: number;
 }
+
+@InputType()
+export class ActivateUser {
+  @Field(() => String, { nullable: false })
+  email: string;
+
+  @Field(() => String, { nullable: false })
+  activationCode: string;
+}

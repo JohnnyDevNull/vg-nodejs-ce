@@ -8,4 +8,10 @@ export class Customer extends Base {
 
   @Field(() => Number)
   role: number;
+
+  @Field(() => Boolean)
+  activated: boolean;
+
+  @Field(() => String)
+  activationCode: string;
 }

@@ -12,10 +12,12 @@ datasource db {
 }
 
 model Customer {
-  id        String   @id @unique @default(uuid())
-  email     String   @unique
-  role      Int      @default(0)
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @unique @default(uuid())
+  email          String   @unique
+  role           Int      @default(0)
+  password       String
+  activated      Boolean  @default(false)
+  activationCode String   @default("")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

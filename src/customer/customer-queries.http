@@ -8,11 +8,11 @@
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMTEwMzQ3MDMtMThmNS00ZWJiLTk3MDgtZjIwZjc2NDQ2MjA5IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNTA5NCwiZXhwIjoxNzA4NzM2ODk0fQ.Kk1UBLLywB_6mzcCjgbD7Y-d3zc46lF0YjMiBAiLCvE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNzkwMywiZXhwIjoxNzA4NzM5NzAzfQ.2-4EiK2ItLEud0T15GRrKS6JnsvjMMWZYffBQhkI63k
 
 query CustomersQuery {
   customers(data: { skip: 0, take: 100 }) {
-    id, email, role, createdAt, updatedAt
+    id, email, role, activated, activationCode, createdAt, updatedAt
   }
 }
 
@@ -78,10 +78,10 @@ mutation CreateUserWithRoleMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMTEwMzQ3MDMtMThmNS00ZWJiLTk3MDgtZjIwZjc2NDQ2MjA5IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNTA5NCwiZXhwIjoxNzA4NzM2ODk0fQ.Kk1UBLLywB_6mzcCjgbD7Y-d3zc46lF0YjMiBAiLCvE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNzkwMywiZXhwIjoxNzA4NzM5NzAzfQ.2-4EiK2ItLEud0T15GRrKS6JnsvjMMWZYffBQhkI63k
 
 mutation DeleteUserMutation {
-  deleteUser(data: { email: "test@test.com" }) {
+  deleteUser(data: { email: "info.johnny@web.de" }) {
     id, email, role, createdAt, updatedAt
   }
 }
@@ -94,6 +94,19 @@ Content-Type: application/graphql
 mutation DeleteUserMutation {
   deleteUser(data: { id: "d1ff2003-1904-4cb3-9ad3-0eaf51172c77" }) {
     id, email, role, createdAt, updatedAt
+  }
+}
+
+###
+
+
+GRAPHQL http://localhost:8080/graphql
+Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNGM2M2QyM2QtMTRiMy00YTYzLWFlZjMtZTVjNmZjMmU4OTI4IiwiZW1haWwiOiJpbmZvLmpvaG5ueUB3ZWIuZGUiLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3Mzg2MzIsImV4cCI6MTcwODc0MDQzMn0.wqeYdCNJj-f7CROcxvI6bChHOYfvAzjXe_OwdBLeujE
+
+mutation ActivateUserMutation {
+  activateUser(data: { email: "info.johnny@web.de", activationCode: "824397" }) {
+    id, email, role, activated, activationCode, createdAt, updatedAt
   }
 }
 

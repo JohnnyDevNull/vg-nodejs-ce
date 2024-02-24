@@ -2,6 +2,7 @@ import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseResolver } from 'lib/base.resolver';
 import { Token } from 'lib/entities/token.entity';
+import { getActivationCode } from 'lib/functions/activation-code.function';
 import { Roles } from 'lib/roles/roles.decorator';
 import { Role } from 'lib/roles/roles.enum';
 import { RolesGuard } from 'lib/roles/roles.guard';
@@ -44,7 +45,12 @@ export class AuthResolver extends BaseResolver {
 
     try {
       const { email, password } = data;
-      const user = await this.customerService.createUser({ email, password });
+      const activationCode = getActivationCode();
+      const user = await this.customerService.createUser({
+        email,
+        password,
+        activationCode,
+      });
       response = this.authService.createToken(user);
     } catch (error) {
       this.logWarning(error, data);
