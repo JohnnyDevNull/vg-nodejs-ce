@@ -10,7 +10,7 @@ GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
 
 query SignInQuery {
-  signIn(data: { email: "admin2@test.com", password: "654321" }) {
+  signIn(data: { email: "admin@test.com", password: "654321" }) {
     accessToken,
     refreshToken,
     user {
@@ -25,7 +25,7 @@ GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
 
 query SignUpQuery {
-    signUp(data: { email: "philipp.john@live.de", password: "123456" }) {
+    signUp(data: { email: "info.johnny@web.de", password: "test123" }) {
       accessToken,
       refreshToken,
       user {
@@ -40,7 +40,7 @@ GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
 
 query RefreshTokenQuery {
-  refreshToken(data: { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbjJAdGVzdC5jb20iLCJpc1JlZnJlc2hUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4NzMxNjA1LCJleHAiOjE3MDg4MTgwMDV9.RmNjkd6OqAKrxh3FBqrOkHoZK7esiLuK6eQ6QaAoq7s" }) {
+  refreshToken(data: { token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiYjJmZTliODUtYTFjYS00YThlLThjY2EtZjllYmNhMmM1ZTVkIiwiZW1haWwiOiJpbmZvLmpvaG5ueUB3ZWIuZGUiLCJpc1JlZnJlc2hUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4NzM1NjQ4LCJleHAiOjE3MDg4MjIwNDh9.WLxI3Vgqx-PlYRjqGZSgGEYICpvVWRHKcQ5jefFnmVw" }) {
     accessToken,
     refreshToken,
     user {

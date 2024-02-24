@@ -1,7 +1,11 @@
-import { BadRequestException, Logger } from '@nestjs/common';
+import { BadRequestException, Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BaseResolver } from 'lib/base.resolver';
 import { Customer } from 'lib/entities/customer.entity';
+import { Roles } from 'lib/roles/roles.decorator';
+import { Role } from 'lib/roles/roles.enum';
+import { RolesGuard } from 'lib/roles/roles.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CustomerService } from './customer.service';
 import {
   CreateUser,
@@ -20,6 +24,8 @@ export class CustomerResolver extends BaseResolver {
   }
 
   @Query(() => [Customer])
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.USER)
   async customers(@Args('data') data: GetCustomerInput) {
     let response: Customer[] = [];
     const { skip, take, where } = data;
@@ -34,6 +40,8 @@ export class CustomerResolver extends BaseResolver {
   }
 
   @Query(() => Customer, { nullable: true })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.USER)
   async customer(@Args('data') data: GetOneCustomerInput) {
     const { id, email } = data;
 
@@ -57,6 +65,8 @@ export class CustomerResolver extends BaseResolver {
   }
 
   @Mutation(() => Customer, { nullable: true })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async updateUser(@Args('data') data: UpdateUser) {
     const { id, email, role } = data;
     let response: Customer = null;
@@ -78,6 +88,8 @@ export class CustomerResolver extends BaseResolver {
   }
 
   @Mutation(() => Customer, { nullable: true })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async deleteUser(@Args('data') data: DeleteUser) {
     const { id, email } = data;
 
@@ -101,6 +113,8 @@ export class CustomerResolver extends BaseResolver {
   }
 
   @Mutation(() => Customer)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async createUser(@Args('data') data: CreateUser) {
     let response: Customer = null;
 

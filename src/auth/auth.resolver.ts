@@ -1,14 +1,13 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { BaseResolver } from 'lib/base.resolver';
 import { Token } from 'lib/entities/token.entity';
-import {
-  RefreshTokenInput,
-  SignInInput,
-  SignUpInput,
-} from 'src/auth/dto/auth.input';
-import { CustomerService } from 'src/customer/customer.service';
+import { Roles } from 'lib/roles/roles.decorator';
+import { Role } from 'lib/roles/roles.enum';
+import { RolesGuard } from 'lib/roles/roles.guard';
+import { CustomerService } from '../customer/customer.service';
 import { AuthService } from './auth.service';
+import { RefreshTokenInput, SignInInput, SignUpInput } from './dto/auth.input';
 
 @Resolver()
 export class AuthResolver extends BaseResolver {
@@ -22,6 +21,8 @@ export class AuthResolver extends BaseResolver {
   }
 
   @Query(() => Token, { nullable: true })
+  @UseGuards(RolesGuard)
+  @Roles(Role.PUBLIC)
   async signIn(@Args('data') data: SignInInput) {
     let response: Token;
 
@@ -36,6 +37,8 @@ export class AuthResolver extends BaseResolver {
   }
 
   @Query(() => Token, { nullable: true })
+  @UseGuards(RolesGuard)
+  @Roles(Role.PUBLIC)
   async signUp(@Args('data') data: SignUpInput) {
     let response: Token;
 
@@ -51,6 +54,8 @@ export class AuthResolver extends BaseResolver {
   }
 
   @Query(() => Token, { nullable: true })
+  @UseGuards(RolesGuard)
+  @Roles(Role.PUBLIC)
   async refreshToken(@Args('data') data: RefreshTokenInput) {
     let response: Token;
 

@@ -3,7 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
 import { Customer } from 'lib/entities/customer.entity';
 import { Token } from 'lib/entities/token.entity';
-import { CustomerService } from 'src/customer/customer.service';
+import { CustomerService } from '../customer/customer.service';
+import { ITokenPayload } from './jwt-strategy.service';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
   }
 
   createToken(user: Customer): Token {
-    const payload = {
+    const payload: ITokenPayload = {
       subject: user.id,
       email: user.email,
     };

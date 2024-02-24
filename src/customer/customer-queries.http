@@ -8,6 +8,7 @@
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMTEwMzQ3MDMtMThmNS00ZWJiLTk3MDgtZjIwZjc2NDQ2MjA5IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNTA5NCwiZXhwIjoxNzA4NzM2ODk0fQ.Kk1UBLLywB_6mzcCjgbD7Y-d3zc46lF0YjMiBAiLCvE
 
 query CustomersQuery {
   customers(data: { skip: 0, take: 100 }) {
@@ -19,6 +20,7 @@ query CustomersQuery {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbjJAdGVzdC5jb20iLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3MzQxNzcsImV4cCI6MTcwODczNTk3N30.UjUQCmwmcqMLWsncoIkeQe0fvm-ZitgEUjw2c2kAywA
 
 query CustomerByEmailQuery {
   customer(data: { email: "user@gmail.com" }) {
@@ -41,17 +43,7 @@ query CustomerByIdQuery {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-
-mutation UpdateEmailByUserIdMutation {
-    updateUser(data: { id:"9e391faf-64b2-4d4c-b879-463532920fd3", email: "test48@gmail.com" }) {
-    id, email, role, createdAt, updatedAt
-  }
-}
-
-###
-
-GRAPHQL http://localhost:8080/graphql
-Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbjJAdGVzdC5jb20iLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3MzQxNzcsImV4cCI6MTcwODczNTk3N30.UjUQCmwmcqMLWsncoIkeQe0fvm-ZitgEUjw2c2kAywA
 
 mutation UpdateEmailByUserIdMutation {
     updateUser(data: { id:"9e391faf-64b2-4d4c-b879-463532920fd3", email: "user@gmail.com" }) {
@@ -74,17 +66,7 @@ mutation UpdateRoleByUserIdMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-
-mutation CreateUserMutation {
-  createUser(data: { email: "test99@test.com", password: "12345" }) {
-    id, email, role, createdAt, updatedAt
-  }
-}
-
-###
-
-GRAPHQL http://localhost:8080/graphql
-Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbjJAdGVzdC5jb20iLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3MzQxNzcsImV4cCI6MTcwODczNTk3N30.UjUQCmwmcqMLWsncoIkeQe0fvm-ZitgEUjw2c2kAywA
 
 mutation CreateUserWithRoleMutation {
     createUser(data: { email: "admin2@test.com", password: "654321", role: 2 }) {
@@ -96,6 +78,7 @@ mutation CreateUserWithRoleMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMTEwMzQ3MDMtMThmNS00ZWJiLTk3MDgtZjIwZjc2NDQ2MjA5IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNTA5NCwiZXhwIjoxNzA4NzM2ODk0fQ.Kk1UBLLywB_6mzcCjgbD7Y-d3zc46lF0YjMiBAiLCvE
 
 mutation DeleteUserMutation {
   deleteUser(data: { email: "test@test.com" }) {
