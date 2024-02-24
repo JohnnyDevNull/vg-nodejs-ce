@@ -41,7 +41,7 @@ export class GetOneCustomerInput {
 }
 
 @InputType()
-export class UpdateUser {
+export class UpdateCustomer {
   @Field(() => String, { nullable: false })
   id: string;
 
@@ -53,7 +53,7 @@ export class UpdateUser {
 }
 
 @InputType()
-export class DeleteUser {
+export class DeleteCustomer {
   @Field(() => String, { nullable: true })
   id: string;
 
@@ -62,7 +62,7 @@ export class DeleteUser {
 }
 
 @InputType()
-export class CreateUser {
+export class CreateCustomer {
   @Field(() => String, { nullable: false })
   email: string;
 
@@ -74,7 +74,7 @@ export class CreateUser {
 }
 
 @InputType()
-export class ActivateUser {
+export class ActivateCustomer {
   @Field(() => String, { nullable: false })
   email: string;
 

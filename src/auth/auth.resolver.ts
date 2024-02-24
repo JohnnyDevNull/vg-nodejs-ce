@@ -46,7 +46,7 @@ export class AuthResolver extends BaseResolver {
     try {
       const { email, password } = data;
       const activationCode = getActivationCode();
-      const user = await this.customerService.createUser({
+      const user = await this.customerService.createCustomer({
         email,
         password,
         activationCode,

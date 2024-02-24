@@ -9,12 +9,12 @@ import { RolesGuard } from 'lib/roles/roles.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CustomerService } from './customer.service';
 import {
-  ActivateUser,
-  CreateUser,
-  DeleteUser,
+  ActivateCustomer,
+  CreateCustomer,
+  DeleteCustomer,
   GetCustomerInput,
   GetOneCustomerInput,
-  UpdateUser,
+  UpdateCustomer,
 } from './dto/customer.input';
 
 @Resolver(() => Customer)
@@ -69,7 +69,7 @@ export class CustomerResolver extends BaseResolver {
   @Mutation(() => Customer, { nullable: true })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  async updateUser(@Args('data') data: UpdateUser) {
+  async updateCustomer(@Args('data') data: UpdateCustomer) {
     const { id, email, role } = data;
     let response: Customer = null;
 
@@ -80,7 +80,7 @@ export class CustomerResolver extends BaseResolver {
           email: email || user.email,
           role: role ?? user.role,
         };
-        response = await this.customerService.updateUser(id, data);
+        response = await this.customerService.updateCustomer(id, data);
       }
     } catch (error) {
       this.logWarning(error, data);
@@ -92,7 +92,7 @@ export class CustomerResolver extends BaseResolver {
   @Mutation(() => Customer, { nullable: true })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  async deleteUser(@Args('data') data: DeleteUser) {
+  async deleteCustomer(@Args('data') data: DeleteCustomer) {
     const { id, email } = data;
 
     if (!id && !email) {
@@ -103,9 +103,9 @@ export class CustomerResolver extends BaseResolver {
 
     try {
       if (id) {
-        response = await this.customerService.deleteUserById(id);
+        response = await this.customerService.deleteCustomerById(id);
       } else if (email) {
-        response = await this.customerService.deleteUserByEmail(email);
+        response = await this.customerService.deleteCustomerByEmail(email);
       }
     } catch (error) {
       this.logWarning(error, data);
@@ -117,7 +117,7 @@ export class CustomerResolver extends BaseResolver {
   @Mutation(() => Customer)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  async createUser(@Args('data') data: CreateUser) {
+  async createCustomer(@Args('data') data: CreateCustomer) {
     let response: Customer = null;
 
     try {
@@ -129,7 +129,7 @@ export class CustomerResolver extends BaseResolver {
         throw new BadRequestException();
       }
 
-      response = await this.customerService.createUser({
+      response = await this.customerService.createCustomer({
         email,
         password,
         role,
@@ -147,8 +147,8 @@ export class CustomerResolver extends BaseResolver {
   @Mutation(() => Customer, { nullable: true })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.PUBLIC)
-  async activateUser(
-    @Args('data') data: ActivateUser,
+  async activateCustomer(
+    @Args('data') data: ActivateCustomer,
     @Context('req') req: any,
   ) {
     let response: Customer = null;
@@ -168,7 +168,7 @@ export class CustomerResolver extends BaseResolver {
         );
       }
 
-      response = await this.customerService.updateUser(user.id, {
+      response = await this.customerService.updateCustomer(user.id, {
         activated: true,
       });
     } catch (error) {

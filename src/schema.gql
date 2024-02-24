@@ -69,30 +69,30 @@ input GetOneCustomerInput {
 }
 
 type Mutation {
-  updateUser(data: UpdateUser!): Customer
-  deleteUser(data: DeleteUser!): Customer
-  createUser(data: CreateUser!): Customer!
-  activateUser(data: ActivateUser!): Customer
+  updateCustomer(data: UpdateCustomer!): Customer
+  deleteCustomer(data: DeleteCustomer!): Customer
+  createCustomer(data: CreateCustomer!): Customer!
+  activateCustomer(data: ActivateCustomer!): Customer
 }
 
-input UpdateUser {
+input UpdateCustomer {
   id: String!
   email: String
   role: Float
 }
 
-input DeleteUser {
+input DeleteCustomer {
   id: String
   email: String
 }
 
-input CreateUser {
+input CreateCustomer {
   email: String!
   password: String!
   role: Float
 }
 
-input ActivateUser {
+input ActivateCustomer {
   email: String!
   activationCode: String!
 }

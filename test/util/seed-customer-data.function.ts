@@ -9,8 +9,8 @@ export async function seedCustomerData(fixture: TestingModule) {
     const { id } = customer;
     const entity = await customerService.findOneById(id);
     if (entity) {
-      await customerService.deleteUserById(id);
+      await customerService.deleteCustomerById(id);
     }
-    await customerService.createUser(customer);
+    await customerService.createCustomer(customer);
   }
 }

@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { hash } from 'bcryptjs';
 import { PrismaService } from '../prisma.service';
-import { CreateUser, GetCustomerInput, UpdateUser } from './dto/customer.input';
+import {
+  CreateCustomer,
+  GetCustomerInput,
+  UpdateCustomer,
+} from './dto/customer.input';
 
 @Injectable()
 export class CustomerService {
@@ -26,22 +30,22 @@ export class CustomerService {
     return this.prisma.customer.findFirst({ where: { email } });
   }
 
-  async updateUser(
+  async updateCustomer(
     id: string,
-    data: Omit<Partial<UpdateUser>, 'id'> & { activated?: boolean },
+    data: Omit<Partial<UpdateCustomer>, 'id'> & { activated?: boolean },
   ) {
     return this.prisma.customer.update({ where: { id }, data });
   }
 
-  async deleteUserById(id: string) {
+  async deleteCustomerById(id: string) {
     return this.prisma.customer.delete({ where: { id } });
   }
 
-  async deleteUserByEmail(email: string) {
+  async deleteCustomerByEmail(email: string) {
     return this.prisma.customer.delete({ where: { email } });
   }
 
-  async createUser(data: CreateUser & { activationCode: string }) {
+  async createCustomer(data: CreateCustomer & { activationCode: string }) {
     const password = await hash(data.password, 10);
     return this.prisma.customer.create({ data: { ...data, password } });
   }

@@ -8,7 +8,7 @@
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNzkwMywiZXhwIjoxNzA4NzM5NzAzfQ.2-4EiK2ItLEud0T15GRrKS6JnsvjMMWZYffBQhkI63k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQ1IiwiZW1haWwiOiJhZG1pbjFAZ21haWwuY29tIiwiaXNBY2Nlc3NUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4ODEwMzQ3LCJleHAiOjE3MDg4MTIxNDd9.os0Ee9wOvo1JQpCPZBmhScKjsoT-OZKZGZSH7u2S2Ec
 
 query CustomersQuery {
   customers(data: { skip: 0, take: 100 }) {
@@ -43,10 +43,10 @@ query CustomerByIdQuery {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbjJAdGVzdC5jb20iLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3MzQxNzcsImV4cCI6MTcwODczNTk3N30.UjUQCmwmcqMLWsncoIkeQe0fvm-ZitgEUjw2c2kAywA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQ1IiwiZW1haWwiOiJhZG1pbjFAZ21haWwuY29tIiwiaXNBY2Nlc3NUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4ODEwMzQ3LCJleHAiOjE3MDg4MTIxNDd9.os0Ee9wOvo1JQpCPZBmhScKjsoT-OZKZGZSH7u2S2Ec
 
-mutation UpdateEmailByUserIdMutation {
-    updateUser(data: { id:"9e391faf-64b2-4d4c-b879-463532920fd3", email: "user@gmail.com" }) {
+mutation UpdateEmailByCustomerIdMutation {
+    updateCustomer(data: { id: "ed6936fc-19d4-4d51-a3ca-e089ea8cab7c", email: "info.johnny@web.de" }) {
     id, email, role, createdAt, updatedAt
   }
 }
@@ -55,9 +55,10 @@ mutation UpdateEmailByUserIdMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQ1IiwiZW1haWwiOiJhZG1pbjFAZ21haWwuY29tIiwiaXNBY2Nlc3NUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4ODEwMzQ3LCJleHAiOjE3MDg4MTIxNDd9.os0Ee9wOvo1JQpCPZBmhScKjsoT-OZKZGZSH7u2S2Ec
 
-mutation UpdateRoleByUserIdMutation {
-    updateUser(data: { id:"9e391faf-64b2-4d4c-b879-463532920fd3", role: 1 }) {
+mutation UpdateRoleByCustomerIdMutation {
+    updateCustomer(data: { id: "ed6936fc-19d4-4d51-a3ca-e089ea8cab7c", role: 1 }) {
         id, email, role, createdAt, updatedAt
     }
 }
@@ -66,10 +67,10 @@ mutation UpdateRoleByUserIdMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbjJAdGVzdC5jb20iLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3MzQxNzcsImV4cCI6MTcwODczNTk3N30.UjUQCmwmcqMLWsncoIkeQe0fvm-ZitgEUjw2c2kAywA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQ1IiwiZW1haWwiOiJhZG1pbjFAZ21haWwuY29tIiwiaXNBY2Nlc3NUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4ODEwMzQ3LCJleHAiOjE3MDg4MTIxNDd9.os0Ee9wOvo1JQpCPZBmhScKjsoT-OZKZGZSH7u2S2Ec
 
-mutation CreateUserWithRoleMutation {
-    createUser(data: { email: "admin2@test.com", password: "654321", role: 2 }) {
+mutation CreateCustomerWithRoleMutation {
+    createCustomer(data: { email: "admin2@gmail.com", password: "654321", role: 2 }) {
         id, email, role, createdAt, updatedAt
     }
 }
@@ -78,10 +79,10 @@ mutation CreateUserWithRoleMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiMDJmNWE0MDktMTAzYi00ZDc1LWI3MjYtOTExMWMwZmUwNWFlIiwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODczNzkwMywiZXhwIjoxNzA4NzM5NzAzfQ.2-4EiK2ItLEud0T15GRrKS6JnsvjMMWZYffBQhkI63k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQ1IiwiZW1haWwiOiJhZG1pbjFAZ21haWwuY29tIiwiaXNBY2Nlc3NUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4ODEwMzQ3LCJleHAiOjE3MDg4MTIxNDd9.os0Ee9wOvo1JQpCPZBmhScKjsoT-OZKZGZSH7u2S2Ec
 
-mutation DeleteUserMutation {
-  deleteUser(data: { email: "info.johnny@web.de" }) {
+mutation DeleteCustomerMutation {
+  deleteCustomer(data: { email: "info.johnny@web.de" }) {
     id, email, role, createdAt, updatedAt
   }
 }
@@ -90,9 +91,10 @@ mutation DeleteUserMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQ1IiwiZW1haWwiOiJhZG1pbjFAZ21haWwuY29tIiwiaXNBY2Nlc3NUb2tlbiI6dHJ1ZSwiaWF0IjoxNzA4ODEwMzQ3LCJleHAiOjE3MDg4MTIxNDd9.os0Ee9wOvo1JQpCPZBmhScKjsoT-OZKZGZSH7u2S2Ec
 
-mutation DeleteUserMutation {
-  deleteUser(data: { id: "d1ff2003-1904-4cb3-9ad3-0eaf51172c77" }) {
+mutation DeleteCustomerMutation {
+  deleteCustomer(data: { id: "cb962c4d-bd10-4529-a40b-e12b41263aa1" }) {
     id, email, role, createdAt, updatedAt
   }
 }
@@ -102,10 +104,10 @@ mutation DeleteUserMutation {
 
 GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNGM2M2QyM2QtMTRiMy00YTYzLWFlZjMtZTVjNmZjMmU4OTI4IiwiZW1haWwiOiJpbmZvLmpvaG5ueUB3ZWIuZGUiLCJpc0FjY2Vzc1Rva2VuIjp0cnVlLCJpYXQiOjE3MDg3Mzg2MzIsImV4cCI6MTcwODc0MDQzMn0.wqeYdCNJj-f7CROcxvI6bChHOYfvAzjXe_OwdBLeujE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiOWUzOTFmYWYtNjRiMi00ZDRjLWI4NzktNDYzNTMyOTIwZmQzIiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsImlzQWNjZXNzVG9rZW4iOnRydWUsImlhdCI6MTcwODgxMDYyMiwiZXhwIjoxNzA4ODEyNDIyfQ.4jLx1iq3Ro5ce1RcL9YHTD_SQASHQBJpE9gzVwhsQJM
 
-mutation ActivateUserMutation {
-  activateUser(data: { email: "info.johnny@web.de", activationCode: "824397" }) {
+mutation ActivateCustomerMutation {
+  activateCustomer(data: { email: "user@gmail.com", activationCode: "123456" }) {
     id, email, role, activated, activationCode, createdAt, updatedAt
   }
 }

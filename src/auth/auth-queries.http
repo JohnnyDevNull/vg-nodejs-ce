@@ -10,7 +10,7 @@ GRAPHQL http://localhost:8080/graphql
 Content-Type: application/graphql
 
 query SignInQuery {
-  signIn(data: { email: "admin@test.com", password: "654321" }) {
+  signIn(data: { email: "admin1@gmail.com", password: "randow-password-admin" }) {
     accessToken,
     refreshToken,
     user {
