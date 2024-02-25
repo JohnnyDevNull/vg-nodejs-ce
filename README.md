@@ -55,3 +55,22 @@ $ npm run start
 $ npm run start:dev
 
 ```
+
+## Running the tests
+
+**Note:** create and seed the database first!
+
+```bash
+# unit tests
+$ npm run test
+
+# unit test single file
+$ npm run test app.controller.spec.ts
+
+# e2e tests
+$ npm run e2e
+
+# e2e test single file
+$ npm run e2e customers.e2e-spec.ts
+
+```
