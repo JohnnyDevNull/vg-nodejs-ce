@@ -29,20 +29,20 @@ describe('GraphQL CustomerResolver (e2e)', () => {
     await app.close();
   });
 
-  describe('query customer (one)', () => {
-    it('should return Unauthorized for customer call without token', () => {
+  describe('mutation deleteCustomer', () => {
+    it('should return Unauthorized for deleteCustomer call without token', () => {
       return request(app.getHttpServer())
         .post(gqlEndpoint)
         .send({
-          query: `{
-          customer(data: { email: "test-user1@gmail.com" }) {
-            id, email, role, activated, activationCode, createdAt, updatedAt
+          query: `mutation {
+          deleteCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1" }) {
+            id, email, role, activated, activationCode
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toStrictEqual({ customer: null });
+          expect(res.body.data).toStrictEqual({ deleteCustomer: null });
           expect(res.body.errors).toHaveLength(1);
           expect(res.body.errors[0]).toStrictEqual({
             extensions: {
@@ -54,7 +54,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return Forbidden resource for customer call with PUBLIC role token', async () => {
+    it('should return Forbidden resource for deleteCustomer call with PUBLIC role token', async () => {
       const user = await customerService.findOneByEmail('test-user1@gmail.com');
       const tokenData = authService.createToken(user);
 
@@ -62,15 +62,15 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customer(data: { email: "test-user1@gmail.com" }) {
-            id, email, role, activated, activationCode, createdAt, updatedAt
+          query: `mutation {
+          deleteCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1" }) {
+            id, email, role, activated, activationCode
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toStrictEqual({ customer: null });
+          expect(res.body.data).toStrictEqual({ deleteCustomer: null });
           expect(res.body.errors).toHaveLength(1);
           expect(res.body.errors[0]).toStrictEqual({
             extensions: {
@@ -86,7 +86,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return the customer for authorized USER by email', async () => {
+    it('should return Forbidden resource for deleteCustomer call with USER role token', async () => {
       const user = await customerService.findOneByEmail('test-user2@gmail.com');
       const tokenData = authService.createToken(user);
 
@@ -94,8 +94,42 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customer(data: { email: "test-user1@gmail.com" }) {
+          query: `mutation {
+          deleteCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1" }) {
+            id, email, role, activated, activationCode
+          }
+        }`,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toStrictEqual({ deleteCustomer: null });
+          expect(res.body.errors).toHaveLength(1);
+          expect(res.body.errors[0]).toStrictEqual({
+            extensions: {
+              code: 'FORBIDDEN',
+              response: {
+                error: 'Forbidden',
+                message: 'Forbidden resource',
+                statusCode: 403,
+              },
+            },
+            message: 'Forbidden resource',
+          });
+        });
+    });
+
+    it('should return the deleted customer for ADMIN role by id', async () => {
+      const user = await customerService.findOneByEmail(
+        'test-admin1@gmail.com',
+      );
+      const tokenData = authService.createToken(user);
+
+      return request(app.getHttpServer())
+        .post(gqlEndpoint)
+        .set('Authorization', `Bearer ${tokenData.accessToken}`)
+        .send({
+          query: `mutation {
+          deleteCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1" }) {
             id, email, role, activated, activationCode
           }
         }`,
@@ -103,7 +137,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body.data).not.toEqual(null);
-          expect(res.body.data.customer).toStrictEqual({
+          expect(res.body.data.deleteCustomer).toStrictEqual({
             activated: false,
             activationCode: '',
             email: 'test-user1@gmail.com',
@@ -114,16 +148,18 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return the customer for authorized USER by id', async () => {
-      const user = await customerService.findOneByEmail('test-user2@gmail.com');
+    it('should return the deleted customer for ADMIN role by email', async () => {
+      const user = await customerService.findOneByEmail(
+        'test-admin1@gmail.com',
+      );
       const tokenData = authService.createToken(user);
 
       return request(app.getHttpServer())
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1" }) {
+          query: `mutation {
+          deleteCustomer(data: { email: "test-user1@gmail.com" }) {
             id, email, role, activated, activationCode
           }
         }`,
@@ -131,7 +167,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body.data).not.toEqual(null);
-          expect(res.body.data.customer).toStrictEqual({
+          expect(res.body.data.deleteCustomer).toStrictEqual({
             activated: false,
             activationCode: '',
             email: 'test-user1@gmail.com',

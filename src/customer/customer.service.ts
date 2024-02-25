@@ -32,7 +32,10 @@ export class CustomerService {
 
   async updateCustomer(
     id: string,
-    data: Omit<Partial<UpdateCustomer>, 'id'> & { activated?: boolean },
+    data: Omit<Partial<UpdateCustomer>, 'id'> & {
+      activated?: boolean;
+      activationCode?: string;
+    },
   ) {
     return this.prisma.customer.update({ where: { id }, data });
   }

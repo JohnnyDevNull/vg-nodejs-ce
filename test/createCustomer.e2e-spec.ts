@@ -23,26 +23,34 @@ describe('GraphQL CustomerResolver (e2e)', () => {
     await seedCustomerData(moduleFixture);
     authService = moduleFixture.get(AuthService);
     customerService = moduleFixture.get(CustomerService);
+
+    try {
+      await customerService.deleteCustomerByEmail('test-user3@gmail.com');
+    } catch {}
   });
 
   afterAll(async () => {
     await app.close();
   });
 
-  describe('query customer (one)', () => {
-    it('should return Unauthorized for customer call without token', () => {
+  describe('mutation createCustomer', () => {
+    it('should return Unauthorized for createCustomer call without token', () => {
       return request(app.getHttpServer())
         .post(gqlEndpoint)
         .send({
-          query: `{
-          customer(data: { email: "test-user1@gmail.com" }) {
-            id, email, role, activated, activationCode, createdAt, updatedAt
+          query: `mutation {
+          createCustomer(data: {
+            email: "test-user3@gmail.com",
+            password: "testXYZ456",
+            role: 1
+          }) {
+            id, email, role, activated, activationCode
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toStrictEqual({ customer: null });
+          expect(res.body.data).toBeNull();
           expect(res.body.errors).toHaveLength(1);
           expect(res.body.errors[0]).toStrictEqual({
             extensions: {
@@ -54,7 +62,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return Forbidden resource for customer call with PUBLIC role token', async () => {
+    it('should return Forbidden resource for createCustomer call with PUBLIC role token', async () => {
       const user = await customerService.findOneByEmail('test-user1@gmail.com');
       const tokenData = authService.createToken(user);
 
@@ -62,15 +70,19 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customer(data: { email: "test-user1@gmail.com" }) {
-            id, email, role, activated, activationCode, createdAt, updatedAt
+          query: `mutation {
+          createCustomer(data: {
+            email: "test-user3@gmail.com",
+            password: "testXYZ456",
+            role: 1
+          }) {
+            id, email, role, activated, activationCode
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toStrictEqual({ customer: null });
+          expect(res.body.data).toBeNull();
           expect(res.body.errors).toHaveLength(1);
           expect(res.body.errors[0]).toStrictEqual({
             extensions: {
@@ -86,7 +98,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return the customer for authorized USER by email', async () => {
+    it('should return Forbidden resource for createCustomer call with USER role token', async () => {
       const user = await customerService.findOneByEmail('test-user2@gmail.com');
       const tokenData = authService.createToken(user);
 
@@ -94,50 +106,65 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customer(data: { email: "test-user1@gmail.com" }) {
+          query: `mutation {
+          createCustomer(data: {
+            email: "test-user3@gmail.com",
+            password: "testXYZ456",
+            role: 1
+          }) {
             id, email, role, activated, activationCode
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).not.toEqual(null);
-          expect(res.body.data.customer).toStrictEqual({
-            activated: false,
-            activationCode: '',
-            email: 'test-user1@gmail.com',
-            id: '1e391faf-64b2-4d4c-b879-463532920fd1',
-            role: 0,
+          expect(res.body.data).toBeNull();
+          expect(res.body.errors).toHaveLength(1);
+          expect(res.body.errors[0]).toStrictEqual({
+            extensions: {
+              code: 'FORBIDDEN',
+              response: {
+                error: 'Forbidden',
+                message: 'Forbidden resource',
+                statusCode: 403,
+              },
+            },
+            message: 'Forbidden resource',
           });
-          expect(res.body.errors).toBeUndefined();
         });
     });
 
-    it('should return the customer for authorized USER by id', async () => {
-      const user = await customerService.findOneByEmail('test-user2@gmail.com');
+    it('should return the created customer for ADMIN role by id', async () => {
+      const user = await customerService.findOneByEmail(
+        'test-admin1@gmail.com',
+      );
       const tokenData = authService.createToken(user);
 
       return request(app.getHttpServer())
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1" }) {
+          query: `mutation {
+          createCustomer(data: {
+            email: "test-user3@gmail.com",
+            password: "testXYZ456",
+            role: 1
+          }) {
             id, email, role, activated, activationCode
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).not.toEqual(null);
-          expect(res.body.data.customer).toStrictEqual({
-            activated: false,
-            activationCode: '',
-            email: 'test-user1@gmail.com',
-            id: '1e391faf-64b2-4d4c-b879-463532920fd1',
-            role: 0,
-          });
+          expect(res.body.data).not.toBeNull();
+          expect(res.body.data.createCustomer).not.toBeNull();
+          expect(res.body.data.createCustomer.email).toEqual(
+            'test-user3@gmail.com',
+          );
+          expect(res.body.data.createCustomer.password).toBeUndefined();
+          expect(res.body.data.createCustomer.role).toEqual(1);
+          expect(res.body.data.createCustomer.activated).toEqual(false);
+          expect(res.body.data.createCustomer.activationCode).toHaveLength(6);
           expect(res.body.errors).toBeUndefined();
         });
     });

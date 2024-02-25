@@ -29,20 +29,20 @@ describe('GraphQL CustomerResolver (e2e)', () => {
     await app.close();
   });
 
-  describe('query customers (list)', () => {
-    it('should return Unauthorized for customers call without token', () => {
+  describe('mutation updateCustomer', () => {
+    it('should return Unauthorized for updateCustomer call without token', () => {
       return request(app.getHttpServer())
         .post(gqlEndpoint)
         .send({
-          query: `{
-          customers(data: { skip: 0, take: 10 }) {
+          query: `mutation {
+          updateCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1", role: 1 }) {
             id, email, role, activated, activationCode, createdAt, updatedAt
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toEqual(null);
+          expect(res.body.data).toStrictEqual({ updateCustomer: null });
           expect(res.body.errors).toHaveLength(1);
           expect(res.body.errors[0]).toStrictEqual({
             extensions: {
@@ -54,7 +54,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return Forbidden resource for customers call with PUBLIC role token', async () => {
+    it('should return Forbidden resource for updateCustomer call with PUBLIC role token', async () => {
       const user = await customerService.findOneByEmail('test-user1@gmail.com');
       const tokenData = authService.createToken(user);
 
@@ -62,15 +62,15 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customers(data: { skip: 0, take: 10 }) {
+          query: `mutation {
+          updateCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1", role: 1 }) {
             id, email, role, activated, activationCode, createdAt, updatedAt
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
-          expect(res.body.data).toEqual(null);
+          expect(res.body.data).toStrictEqual({ updateCustomer: null });
           expect(res.body.errors).toHaveLength(1);
           expect(res.body.errors[0]).toStrictEqual({
             extensions: {
@@ -86,7 +86,7 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         });
     });
 
-    it('should return the unfiltered customers list for authorized USER', async () => {
+    it('should return Forbidden resource for updateCustomer call with USER role token', async () => {
       const user = await customerService.findOneByEmail('test-user2@gmail.com');
       const tokenData = authService.createToken(user);
 
@@ -94,16 +94,56 @@ describe('GraphQL CustomerResolver (e2e)', () => {
         .post(gqlEndpoint)
         .set('Authorization', `Bearer ${tokenData.accessToken}`)
         .send({
-          query: `{
-          customers(data: { skip: 0, take: 10 }) {
+          query: `mutation {
+          updateCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1", role: 1 }) {
             id, email, role, activated, activationCode, createdAt, updatedAt
           }
         }`,
         })
         .expect(200)
         .expect((res) => {
+          expect(res.body.data).toStrictEqual({ updateCustomer: null });
+          expect(res.body.errors).toHaveLength(1);
+          expect(res.body.errors[0]).toStrictEqual({
+            extensions: {
+              code: 'FORBIDDEN',
+              response: {
+                error: 'Forbidden',
+                message: 'Forbidden resource',
+                statusCode: 403,
+              },
+            },
+            message: 'Forbidden resource',
+          });
+        });
+    });
+
+    it('should return the updated customer for ADMIN role', async () => {
+      const user = await customerService.findOneByEmail(
+        'test-admin1@gmail.com',
+      );
+      const tokenData = authService.createToken(user);
+
+      return request(app.getHttpServer())
+        .post(gqlEndpoint)
+        .set('Authorization', `Bearer ${tokenData.accessToken}`)
+        .send({
+          query: `mutation {
+          updateCustomer(data: { id: "1e391faf-64b2-4d4c-b879-463532920fd1", role: 1 }) {
+            id, email, role, activated, activationCode
+          }
+        }`,
+        })
+        .expect(200)
+        .expect((res) => {
           expect(res.body.data).not.toEqual(null);
-          expect(res.body.data.customers.length).toBeGreaterThanOrEqual(3);
+          expect(res.body.data.updateCustomer).toStrictEqual({
+            activated: false,
+            activationCode: '',
+            email: 'test-user1@gmail.com',
+            id: '1e391faf-64b2-4d4c-b879-463532920fd1',
+            role: 1,
+          });
           expect(res.body.errors).toBeUndefined();
         });
     });
