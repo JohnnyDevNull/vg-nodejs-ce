@@ -6,32 +6,32 @@ import { RolesGuard } from './roles.guard';
 
 describe('RolesGuard', () => {
   let guard: RolesGuard;
-  let reflcetor: Reflector;
+  let reflector: Reflector;
 
   beforeEach(() => {
-    reflcetor = getReflectorMock();
-    guard = new RolesGuard(reflcetor);
+    reflector = getReflectorMock();
+    guard = new RolesGuard(reflector);
     GqlExecutionContext.create = jest.fn();
   });
 
   it('should return true for no role', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(null);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(null);
     expect(guard.canActivate(getContextMock())).toEqual(true);
   });
 
   it('should return true for role [PUBLIC]', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.PUBLIC);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.PUBLIC);
     expect(guard.canActivate(getContextMock())).toEqual(true);
   });
 
   it('should return false for role [USER] when no user is given', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.USER);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.USER);
     GqlExecutionContext.create = jest.fn().mockReturnValue(getGqlContextMock());
     expect(guard.canActivate(getContextMock())).toEqual(false);
   });
 
   it('should return true for role [USER] when user is given with the corresponding role', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.USER);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.USER);
     GqlExecutionContext.create = jest
       .fn()
       .mockReturnValue(getGqlContextMock({ role: Role.USER }));
@@ -39,7 +39,7 @@ describe('RolesGuard', () => {
   });
 
   it('should return false for role [USER] when user is given with lower role', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.USER);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.USER);
     GqlExecutionContext.create = jest
       .fn()
       .mockReturnValue(getGqlContextMock({ role: Role.PUBLIC }));
@@ -47,7 +47,7 @@ describe('RolesGuard', () => {
   });
 
   it('should return true for role [USER] when user is given with higher role', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.USER);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.USER);
     GqlExecutionContext.create = jest
       .fn()
       .mockReturnValue(getGqlContextMock({ role: Role.ADMIN }));
@@ -55,13 +55,13 @@ describe('RolesGuard', () => {
   });
 
   it('should return false for role [ADMIN] when no user is given', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
     GqlExecutionContext.create = jest.fn().mockReturnValue(getGqlContextMock());
     expect(guard.canActivate(getContextMock())).toEqual(false);
   });
 
   it('should return true for role [ADMIN] when user is given with the corresponding role', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
     GqlExecutionContext.create = jest
       .fn()
       .mockReturnValue(getGqlContextMock({ role: Role.ADMIN }));
@@ -69,7 +69,7 @@ describe('RolesGuard', () => {
   });
 
   it('should return false for role [ADMIN] when user is given with lower role [USER]', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
     GqlExecutionContext.create = jest
       .fn()
       .mockReturnValue(getGqlContextMock({ role: Role.USER }));
@@ -77,7 +77,7 @@ describe('RolesGuard', () => {
   });
 
   it('should return false for role [ADMIN] when user is given with lower role [PUBLIC]', () => {
-    jest.spyOn(reflcetor, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
+    jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(Role.ADMIN);
     GqlExecutionContext.create = jest
       .fn()
       .mockReturnValue(getGqlContextMock({ role: Role.PUBLIC }));
